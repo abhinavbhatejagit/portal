@@ -16,8 +16,8 @@ jobs:
       - uses: azure/docker-login@v1
         with:
            login-server: vidyoportalregistry.azurecr.io
-           username: VidyoPortalRegistry
-           password: opQbq9NcUJ0PZq+SfZJFoiMzyV8vmgLRu9cY5t6Z6D+ACRCzOrxt
+           username: vidyoportalRegistry
+           password: LZT5JSdfzgZfQpWoFSlxxR7bFcRszOR0jpCYe6yB2k+ACRCi3Agt
       - run: |
-          docker build . -t vidyoportalregistry.azurecr.io/VidyoPortal:${{ github.sha }}
-          docker push vidyoportalregistry.azurecr.io/VidyoPortal:${{ github.sha }}
+          docker build . -t vidyoportalregistry.azurecr.io/vidyoportal:${{ github.sha }}
+          docker push vidyoportalregistry.azurecr.io/vidyoportal:${{ github.sha }}
