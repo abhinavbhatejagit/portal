@@ -1,0 +1,23 @@
+name: Build a Docker image and Push it to ACR
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/docker-login@v1
+        with:
+           login-server: vidyoportalregistry.azurecr.io
+           username: VidyoPortalRegistry
+           password: opQbq9NcUJ0PZq+SfZJFoiMzyV8vmgLRu9cY5t6Z6D+ACRCzOrxt
+      - run: |
+          docker build . -t vidyoportalregistry.azurecr.io/VidyoPortal:${{ github.sha }}
+          docker push vidyoportalregistry.azurecr.io/VidyoPortal:${{ github.sha }}
