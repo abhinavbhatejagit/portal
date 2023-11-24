@@ -1,0 +1,82 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.2'
+	id 'io.spring.dependency-management' version '1.1.2'
+}
+
+group = 'com.vidyo'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+ext.jaxwsSourceDir = "${buildDir}/generated/sources/jaxws"
+
+configurations {
+	jaxws
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+task wsimport {
+	description = 'Generate classes from wsdl using wsimport'
+
+	doLast {
+		project.mkdir(jaxwsSourceDir)
+		ant {
+			taskdef(name: 'wsimport',
+					classname: 'com.sun.tools.ws.ant.WsImport',
+					classpath: configurations.jaxws.asPath
+			)
+			wsimport(
+					keep: true,
+					destdir: jaxwsSourceDir,
+					extension: "true",
+					verbose: true,
+					wsdl: "https://natantest.alpha.vidyo.com/services/v1_1/VidyoPortalUserService?wsdl",
+					xnocompile: true,
+					package: "com.vidyo.portal.wsdl") {
+				xjcarg(value: "-XautoNameResolution")
+			}
+		}
+	}
+}
+
+sourceSets {
+	main {
+		java.srcDirs += jaxwsSourceDir
+	}
+}
+
+compileJava {
+	dependsOn wsimport
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation ('org.springframework.boot:spring-boot-starter-web-services') {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+	}
+	jaxws 'com.sun.xml.ws:jaxws-tools:4.0.1',
+			'jakarta.xml.ws:jakarta.xml.ws-api:4.0.0',
+			'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0',
+			'jakarta.activation:jakarta.activation-api:2.1.2',
+			'com.sun.xml.ws:jaxws-rt:4.0.1'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
