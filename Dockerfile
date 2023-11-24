@@ -1,4 +1,26 @@
-FROM openjdk:17
-ARG JAR_FILE=build/libs/portal-0.0.1-SNAPSHOT.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+# Use the official OpenJDK base image
+FROM openjdk:17-jdk-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the Gradle build files and settings
+COPY build.gradle settings.gradle gradlew /app/
+
+# Copy the Gradle wrapper files
+COPY gradle /app/gradle
+
+# Download and install the required dependencies
+RUN ./gradlew dependencies
+
+# Copy the application source code
+COPY src /app/src
+
+# Build the application
+RUN ./gradlew build
+
+# Set the entry point for the application
+ENTRYPOINT ["java", "-jar", "build/libs/portal-0.0.1-SNAPSHOT.jar"]
+
+# Expose the port that the application will run on
+EXPOSE 8081
