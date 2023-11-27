@@ -19,5 +19,5 @@ jobs:
            username: azcourseacr
            password: TZ/Hppt2n9z3/9evSsPZooz7v+pPV7ipycb1q2jYad+ACRCL9fPq
       - run: |
-          docker build . -t azcourseacr.azurecr.io/azcourseacr:${{ github.sha }}
-          docker push azcourseacr.azurecr.io/azcourseacr:${{ github.sha }}
+          docker build . -t azcourseacr.azurecr.io/azcourseacr:1.0
+          docker push azcourseacr.azurecr.io/azcourseacr:1.0
