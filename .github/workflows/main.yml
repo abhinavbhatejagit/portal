@@ -15,9 +15,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: azure/docker-login@v1
         with:
-           login-server: vidyoportalregistry.azurecr.io
-           username: vidyoportalRegistry
-           password: LZT5JSdfzgZfQpWoFSlxxR7bFcRszOR0jpCYe6yB2k+ACRCi3Agt
+           login-server: azcourseacr.azurecr.io
+           username: azcourseacr
+           password: TZ/Hppt2n9z3/9evSsPZooz7v+pPV7ipycb1q2jYad+ACRCL9fPq
       - run: |
-          docker build . -t vidyoportalregistry.azurecr.io/vidyoportal:${{ github.sha }}
-          docker push vidyoportalregistry.azurecr.io/vidyoportal:${{ github.sha }}
+          docker build . -t azcourseacr.azurecr.io/azcourseacr:${{ github.sha }}
+          docker push azcourseacr.azurecr.io/azcourseacr:${{ github.sha }}
