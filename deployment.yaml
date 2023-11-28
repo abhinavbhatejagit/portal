@@ -1,20 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: portal-deployment
+  name: portal-backend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: portal-deployment
+      app: portal-backend
   template:
     metadata:
       labels:
-        app: portal-deployment
+        app: portal-backend
     spec:
       containers:
-        - name: portal-deployment
-          image: portalbackend:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 8081
+        - name: portal-backend
+          image: vidyoportal.azurecr.io/portalbackend:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portal-backend
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 81
+      targetPort: 8081
+  selector:
+    app: portal-backend
