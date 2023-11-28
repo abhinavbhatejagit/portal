@@ -19,5 +19,5 @@ jobs:
            username: vidyoportal
            password: CkgJTc3fJuy5SbaEOxGw2wyC9FxnblIWhg1kkk5gDT+ACRA5JL6H
       - run: |
-          docker build . -t vidyoportal.azurecr.io/portalbackend:1.0
-          docker push vidyoportal.azurecr.io/portalbackend:1.0
+          docker build . -t vidyoportal.azurecr.io/portalbackend:latest
+          docker push vidyoportal.azurecr.io/portalbackend:latest
